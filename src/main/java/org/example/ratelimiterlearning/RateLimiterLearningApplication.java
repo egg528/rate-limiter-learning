@@ -1,13 +1,11 @@
-package org.example.ratelimiter;
+package org.example.ratelimiterlearning;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RateLimiterApplication {
-
+public class RateLimiterLearningApplication {
     public static void main(String[] args) {
-        SpringApplication.run(RateLimiterApplication.class, args);
+        SpringApplication.run(RateLimiterLearningApplication.class, args);
     }
-
 }
