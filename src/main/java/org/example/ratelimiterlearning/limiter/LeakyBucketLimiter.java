@@ -3,6 +3,7 @@ package org.example.ratelimiterlearning.limiter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class LeakyBucketLimiter {
@@ -15,8 +16,22 @@ public class LeakyBucketLimiter {
         this.bucket.beginLeak();
     }
 
-    public void tryRun() {
+    public void execute(long timeoutMillis) throws TimeoutException {
         var id = requestIds.getAndIncrement();
         bucket.add(id);
+
+        checkExecuted(id, timeoutMillis);
+    }
+
+    private void checkExecuted(long id, long timeoutMillis) throws TimeoutException {
+        long startTime = System.currentTimeMillis();
+
+        while(System.currentTimeMillis() - startTime < timeoutMillis) {
+            if (!bucket.isWaiting(id)) {
+                return;
+            }
+        }
+
+        throw new TimeoutException("Waiting timed out. Please retry.");
     }
 }
