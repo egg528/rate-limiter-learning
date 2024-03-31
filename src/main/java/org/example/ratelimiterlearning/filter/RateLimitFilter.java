@@ -2,23 +2,24 @@ package org.example.ratelimiterlearning.filter;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.ratelimiterlearning.limiter.LeakyBucket;
 import org.example.ratelimiterlearning.limiter.LeakyBucketLimiter;
+import org.example.ratelimiterlearning.limiter.RateLimiter;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+@Component
 public class RateLimitFilter implements Filter {
     private static final Logger logger = Logger.getLogger(RateLimitFilter.class.getName());
     private static final long timeoutMillis = Duration.ofSeconds(5).toMillis();
-    private static final LeakyBucketLimiter limiter = new LeakyBucketLimiter(
-            new LeakyBucket(1, 1000, TimeUnit.MILLISECONDS)
-    );
+    private final RateLimiter limiter;
 
-
+    public RateLimitFilter(RateLimiter limiter) {
+        this.limiter = limiter;
+    }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {

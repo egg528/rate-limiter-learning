@@ -3,3 +3,8 @@ spring:
     redis:
       host: localhost
       port: 6379
+
+rate-limiter:
+  leaky-bucket:
+    flowRate: 1000
+    capacity: 1

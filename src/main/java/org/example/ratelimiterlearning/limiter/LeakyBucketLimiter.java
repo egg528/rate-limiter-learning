@@ -2,11 +2,13 @@ package org.example.ratelimiterlearning.limiter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class LeakyBucketLimiter {
+@Component
+public class LeakyBucketLimiter implements RateLimiter {
     private static final Logger logger = LoggerFactory.getLogger(LeakyBucketLimiter.class);
     private final AtomicLong requestIds = new AtomicLong(0);
     private final LeakyBucket bucket;
