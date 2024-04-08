@@ -4,6 +4,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.ratelimiterlearning.limiter.LeakyBucketLimiter;
 import org.example.ratelimiterlearning.limiter.RateLimiter;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +18,7 @@ public class RateLimitFilter implements Filter {
     private static final long timeoutMillis = Duration.ofSeconds(5).toMillis();
     private final RateLimiter limiter;
 
-    public RateLimitFilter(RateLimiter limiter) {
+    public RateLimitFilter(@Qualifier("redisScriptLimiter") RateLimiter limiter) {
         this.limiter = limiter;
     }
 
