@@ -6,10 +6,10 @@ local current = tonumber(redis.call('get', key) or '0')
 if current + 1 > limitCount then -- 분당호출수 초과시 0 return
     return 0
 elseif current == 0 then
-    redis.call('INCRBY', key, '1')
-    redis.call('expire', key,limitTime)
+    redis.call('INCR', key)
+    redis.call('EXPIRE', key, limitTime)
     return current + 1
 else
-    redis.call('INCRBY', key, '1')
+    redis.call('INCR', key)
     return current + 1
 end
